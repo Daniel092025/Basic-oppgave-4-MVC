@@ -21,7 +21,7 @@ class Program
 
     var csvString = File.ReadAllLines(filePath);
     var movies = csvString.Skip(1).Select(csvString => new MovieData(csvString)).ToList();
-        var Menu = new MenuService();
+    var Menu = new MenuService();
 
     Console.WriteLine($"Lest inn de nåværende topp {movies.Count} filmer fra {filePath}");
 
