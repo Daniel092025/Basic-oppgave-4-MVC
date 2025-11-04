@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.IO.Compression;
+using Basic_oppgave_4_MVC.Service;
 
 class Program
 {
@@ -20,8 +21,9 @@ class Program
 
     var csvString = File.ReadAllLines(filePath);
     var movies = csvString.Skip(1).Select(csvString => new MovieData(csvString)).ToList();
+        var Menu = new MenuService();
 
-    Console.WriteLine($"✅ Lest inn {movies.Count} filmer fra {filePath}");
+    Console.WriteLine($"Lest inn de nåværende topp {movies.Count} filmer fra {filePath}");
 
         Console.ForegroundColor = ConsoleColor.DarkYellow;
         Console.WriteLine("\n IMDB top movies");
@@ -30,18 +32,7 @@ class Program
         bool fortsett = true;
         while (fortsett)
         {
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("\n Vennligst velg ett alternativ");
-            Console.WriteLine("1. Liste - Top 10");
-            Console.WriteLine("2. Full liste - Hele listen på top 250");
-            Console.WriteLine("3. Sjangere - Mest populære sjangere");
-            Console.WriteLine("4. Søk");
-            Console.WriteLine("5. Exit - Avslutt programmet");
-            Console.Write("\nDitt valg: ");
-            Console.ResetColor();
-
-            string valg = (Console.ReadLine() ?? "").Trim().ToLower();
-
+            string valg = Menu.VisMenu();
             switch (valg)
             {
                 case "Liste":
@@ -73,7 +64,7 @@ class Program
                     var mestPopulæreSjanger = movies
                                 .GroupBy(m => m.Genres)
                                 .OrderByDescending(g => g.Count())
-                                .Take(4);
+                                .Take(5);
                     foreach(var gruppe in mestPopulæreSjanger)
                     {
                         Console.ForegroundColor = ConsoleColor.Green;
